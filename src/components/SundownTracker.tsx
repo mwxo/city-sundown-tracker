@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import SunCalc from 'suncalc';
+import { useTheme } from '@/context/ThemeContext';
 
 interface City {
   name: string;
@@ -32,6 +33,7 @@ export default function SundownTracker() {
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [cities, setCities] = useState<Array<City & { currentTime: string; sundownTime: string }>>([]); 
+  const { theme } = useTheme();
 
   // Update the current time every second
   useEffect(() => {
@@ -92,7 +94,7 @@ export default function SundownTracker() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6 text-center">
+      <h1 className="text-2xl font-bold mb-6 text-center text-[var(--text-primary)]">
         Sundown Times for Major Cities
       </h1>
       
@@ -100,7 +102,7 @@ export default function SundownTracker() {
         <input
           type="text"
           placeholder="Search cities..."
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-2 border rounded bg-[var(--input-bg)] text-[var(--text-primary)] border-[var(--input-border)]"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -110,17 +112,17 @@ export default function SundownTracker() {
         {filteredCities.map((city) => (
           <div 
             key={city.name} 
-            className="border border-gray-200 rounded p-4 shadow-sm hover:shadow-md transition"
+            className="border rounded p-4 transition-shadow bg-[var(--card-bg)] border-[var(--border-color)] shadow-[var(--card-shadow)] hover:shadow-[var(--card-hover-shadow)]"
           >
-            <h2 className="text-xl font-semibold mb-2">{city.name}</h2>
+            <h2 className="text-xl font-semibold mb-2 text-[var(--text-primary)]">{city.name}</h2>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <p className="text-sm text-gray-500">Current Time</p>
-                <p className="font-medium">{city.currentTime}</p>
+                <p className="text-sm text-[var(--text-secondary)]">Current Time</p>
+                <p className="font-medium text-[var(--text-primary)]">{city.currentTime}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Sundown Time</p>
-                <p className="font-medium">{city.sundownTime}</p>
+                <p className="text-sm text-[var(--text-secondary)]">Sundown Time</p>
+                <p className="font-medium text-[var(--text-primary)]">{city.sundownTime}</p>
               </div>
             </div>
           </div>
@@ -128,10 +130,10 @@ export default function SundownTracker() {
       </div>
       
       {filteredCities.length === 0 && (
-        <p className="text-center text-gray-500 my-8">No cities found matching "{searchTerm}"</p>
+        <p className="text-center text-[var(--text-secondary)] my-8">No cities found matching &quot;{searchTerm}&quot;</p>
       )}
       
-      <p className="text-xs text-gray-400 text-center mt-8">
+      <p className="text-xs text-[var(--text-secondary)] text-center mt-8">
         Last updated: {currentTime.toLocaleTimeString()}
       </p>
     </div>
